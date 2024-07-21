@@ -5,46 +5,61 @@
  *  Mari05liM
  *  mariodev@outlook.com.br
  *
- *  Criptografia: 1.0
+ *  Criptografia: 1.1
  **/
 
-define('VERSAO', '1.0'); // Versão Tokenizer
+define('VERSAO', '1.1'); // Versão Tokenizer
 
 // Parâmetros
 // Valor: Valor a ser criptografado
 // Chave: Chave de criptografia
 // Validade: true = 1 dia, false = quando a versão mudar
 
+// Função para derivar uma chave segura a partir da chave fornecida
+function derivarChave($chave, $token)
+{
+    return hash_pbkdf2('sha256', $chave, $token, 1000, 32, true);
+}
+
 // Criptografar parâmetro
 function criptografar($valor, $chave = 'AE8', $validade = TRUE)
 {
     // Define um token de validade
     $token = ($validade ? date('Y-m-d') . VERSAO : VERSAO);
-    // Gera um hash com o token e a chave
-    $hash = hash_hmac('sha256', $token, $chave);
-    // Cria um vetor de inicialização
-    $iv = substr($hash, 0, 16);
+    // Deriva uma chave segura usando a chave fornecida e o token
+    $chaveSegura = derivarChave($chave, $token);
+    // Gera um vetor de inicialização (IV) aleatório
+    $iv = openssl_random_pseudo_bytes(16);
     // Criptografa o valor
-    $criptografado = openssl_encrypt($valor, 'AES-256-CBC', $hash, 0, $iv);
+    $criptografado = openssl_encrypt($valor, 'AES-256-CBC', $chaveSegura, 0, $iv);
+
+    if ($criptografado === false) {
+        return false;
+    }
+
+    // Codifica o IV e o texto criptografado em Base64
+    $resultado = encodeBase64($iv . $criptografado);
 
     // Retorne o valor criptografado
-    return encodeBase64($criptografado);
+    return $resultado;
 }
 
 // Descriptografar parâmetro
 function descriptografar($valor, $chave = 'AE8', $validade = TRUE)
 {
     // Decodifica o valor
-    $valor = decodeBase64($valor);
+    $valorDecodificado = decodeBase64($valor);
+    // Separa o IV do texto criptografado
+    $iv = substr($valorDecodificado, 0, 16);
+    $textoCriptografado = substr($valorDecodificado, 16);
     // Define um token de validade
     $token = ($validade ? date('Y-m-d') . VERSAO : VERSAO);
-    // Gera um hash com o token e a chave
-    $hash = hash_hmac('sha256', $token, $chave);
-    // Cria um vetor de inicialização
-    $iv = substr($hash, 0, 16);
+    // Deriva uma chave segura usando a chave fornecida e o token
+    $chaveSegura = derivarChave($chave, $token);
     // Descriptografa o valor
-    $descriptografado = openssl_decrypt($valor, 'AES-256-CBC', $hash, 0, $iv);
-    // Verifica se o token é válido
+    $descriptografado = openssl_decrypt($textoCriptografado, 'AES-256-CBC', $chaveSegura, 0, $iv);
+
+    // Verifica se a descriptografia foi bem-sucedida
     if ($descriptografado === false) {
         return false;
     }
@@ -57,8 +72,7 @@ function descriptografar($valor, $chave = 'AE8', $validade = TRUE)
 function encodeBase64($base64)
 {
     $encoded = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($base64));
-    $encoded = rtrim($encoded, '-_');
-    return $encoded;
+    return rtrim($encoded, '-_');
 }
 
 // Decodifica base64
@@ -66,8 +80,7 @@ function decodeBase64($encoded)
 {
     $decoded = str_replace(['-', '_'], ['+', '/'], $encoded);
     $decoded = str_pad($decoded, strlen($decoded) % 4, '=', STR_PAD_RIGHT);
-    $decoded = base64_decode($decoded);
-    return $decoded;
+    return base64_decode($decoded);
 }
 
 //---
