@@ -4,11 +4,11 @@
  *  ▓▓▓▓Dev by Mari05liM▓▓▓▓
  *  Mari05liM
  *  mariodev@outlook.com.br
- *
- *  Criptografia: 1.5
  **/
 
-define('VERSAO', '1.5'); // Versão Tokenizer
+define('VERSAO', '1.7'); // Versão Tokenizer
+
+date_default_timezone_set('America/Sao_Paulo');
 
 // Parâmetros
 // Valor: Valor a ser criptografado
@@ -16,7 +16,7 @@ define('VERSAO', '1.5'); // Versão Tokenizer
 // Validade: true = 1 dia, false = quando a versão mudar
 
 // Criptografar parâmetro
-function criptografar($valor, $chave = 'AE8', $validade = TRUE)
+function criptografar($valor, $chave = 'AE8', $validade = false)
 {
     // Define um token de validade
     $token = ($validade ? date('Y-m-d') . VERSAO : VERSAO);
@@ -39,7 +39,7 @@ function criptografar($valor, $chave = 'AE8', $validade = TRUE)
 }
 
 // Descriptografar parâmetro
-function descriptografar($valor, $chave = 'AE8', $validade = TRUE)
+function descriptografar($valor, $chave = 'AE8', $validade = false)
 {
     // Decodifica o valor
     $valorDecodificado = decodeBase64($valor);

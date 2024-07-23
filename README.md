@@ -13,7 +13,7 @@ It is a simple and secure way to encrypt data generating small tokens that can b
 Tokenizer is available on [Packagist](https://packagist.org/packages/ae8/tokenizer), and installation via [Composer](https://getcomposer.org) is the recommended way to install Tokenizer. Just add this line to your `composer.json` file:
 
 ```json
-"ae8/tokenizer": "^1.5"
+"ae8/tokenizer": "^1.6"
 ```
 
 or run

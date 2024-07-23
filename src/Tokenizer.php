@@ -4,18 +4,18 @@
  *  ▓▓▓▓Dev by Mari05liM▓▓▓▓
  *  Mari05liM
  *  mariodev@outlook.com.br
- *
- *  Criptografia: 1.5
  **/
 
 namespace AE8\Tokenizer;
 
 class Tokenizer
 {
-    const VERSAO = '1.5';
+    const VERSAO = '1.7';
 
-    public static function criptografar($valor, $chave = 'AE8', $validade = TRUE)
+    public static function criptografar($valor, $chave = 'AE8', $validade = false)
     {
+        date_default_timezone_set('America/Sao_Paulo');
+
         $token = ($validade ? date('Y-m-d') . self::VERSAO : self::VERSAO);
         $chaveSegura = self::derivarChave($chave, $token);
         $iv = openssl_random_pseudo_bytes(16);
@@ -28,8 +28,10 @@ class Tokenizer
         return self::encodeBase64($iv . $criptografado);
     }
 
-    public static function descriptografar($valor, $chave = 'AE8', $validade = TRUE)
+    public static function descriptografar($valor, $chave = 'AE8', $validade = false)
     {
+        date_default_timezone_set('America/Sao_Paulo');
+
         $valorDecodificado = self::decodeBase64($valor);
         $iv = substr($valorDecodificado, 0, 16);
         $textoCriptografado = substr($valorDecodificado, 16);
