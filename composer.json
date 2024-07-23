@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "AE8\\Tokenizer\\": "src/Tokenizer.php"
+            "AE8\\Tokenizer\\": "src/"
         }
     }
 }

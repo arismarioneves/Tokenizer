@@ -27,7 +27,7 @@ Note that the `vendor` folder and the `vendor/autoload.php` script are generated
 ## Usage
 
 ```php
-use AE8\Tokenizer;
+use AE8\Tokenizer\Tokenizer;
 
 // Encrypt a value
 $encrypted = Tokenizer::criptografar('Tokenizer');
