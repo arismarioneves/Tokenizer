@@ -1,0 +1,24 @@
+{
+    "name": "ae8/tokenizer",
+    "description": "A simple PHP library for token-based encryption.",
+    "type": "library",
+    "keywords": ["encryption", "security", "aes", "token"],
+    "homepage": "https://ae8.com.br/tokenizer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arismário Neves (Mari05liM)",
+            "email": "mariodev@outlook.com.br",
+            "homepage": "https://arismario.dev/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "AE8\\Tokenizer\\": "src/Tokenizer.php"
+        }
+    }
+}

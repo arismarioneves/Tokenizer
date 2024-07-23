@@ -5,21 +5,15 @@
  *  Mari05liM
  *  mariodev@outlook.com.br
  *
- *  Criptografia: 1.1
+ *  Criptografia: 1.5
  **/
 
-define('VERSAO', '1.1'); // Versão Tokenizer
+define('VERSAO', '1.5'); // Versão Tokenizer
 
 // Parâmetros
 // Valor: Valor a ser criptografado
 // Chave: Chave de criptografia
 // Validade: true = 1 dia, false = quando a versão mudar
-
-// Função para derivar uma chave segura a partir da chave fornecida
-function derivarChave($chave, $token)
-{
-    return hash_pbkdf2('sha256', $chave, $token, 1000, 32, true);
-}
 
 // Criptografar parâmetro
 function criptografar($valor, $chave = 'AE8', $validade = TRUE)
@@ -66,6 +60,12 @@ function descriptografar($valor, $chave = 'AE8', $validade = TRUE)
 
     // Retorna o valor descriptografado
     return $descriptografado;
+}
+
+// Função para derivar uma chave segura a partir da chave fornecida
+function derivarChave($chave, $token)
+{
+    return hash_pbkdf2('sha256', $chave, $token, 1000, 32, true);
 }
 
 // Codifica base64
