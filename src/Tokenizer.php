@@ -10,11 +10,15 @@ namespace AE8\Tokenizer;
 
 class Tokenizer
 {
-    const VERSAO = '2.0';
+    const VERSAO = '2.1';
 
     public static function criptografar($valor, $chave = 'AE8', $validade = false)
     {
         date_default_timezone_set('America/Sao_Paulo');
+
+        if (!$valor) {
+            return false;
+        }
 
         $versao = str_replace('.', '', self::VERSAO);
         $data = $validade ? date('ymd') : '';
@@ -33,6 +37,10 @@ class Tokenizer
     public static function descriptografar($valor, $chave = 'AE8')
     {
         date_default_timezone_set('America/Sao_Paulo');
+
+        if (!$valor) {
+            return false;
+        }
 
         $versao = str_replace('.', '', self::VERSAO);
         $valorDecodificado = self::decodeBase64($valor);

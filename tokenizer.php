@@ -6,13 +6,17 @@
  *  mariodev@outlook.com.br
  **/
 
-define('VERSAO', '1.7');
+define('VERSAO', '2.1');
 
 date_default_timezone_set('America/Sao_Paulo');
 
 // Criptografar
 function criptografar($valor, $chave = 'AE8', $validade = false)
 {
+    if (!$valor) {
+        return false;
+    }
+
     $versao = str_replace('.', '', VERSAO);
     $data = $validade ? date('ymd') : '';
     $dados = json_encode(['1' => $valor, '2' => $validade ? 1 : 0, '3' => $versao, '4' => $data]);
@@ -26,6 +30,10 @@ function criptografar($valor, $chave = 'AE8', $validade = false)
 // Descriptografar
 function descriptografar($valor, $chave = 'AE8')
 {
+    if (!$valor) {
+        return false;
+    }
+
     $versao = str_replace('.', '', VERSAO);
     $valorDecodificado = decodeBase64($valor);
     $iv = substr($valorDecodificado, 0, 16);

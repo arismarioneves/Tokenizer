@@ -3,7 +3,7 @@
     "description": "A simple PHP library for token-based encryption.",
     "type": "library",
     "keywords": ["encryption", "security", "aes", "token"],
-    "homepage": "https://ae8.com.br/tokenizer",
+    "homepage": "https://github.com/arismarioneves/tokenizer",
     "license": "MIT",
     "authors": [
         {
